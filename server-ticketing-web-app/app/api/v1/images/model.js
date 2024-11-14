@@ -3,7 +3,7 @@ const { model, Schema } = mongoose;
 
 let imageSchema = new Schema(
   {
-    url: { type: String },
+    name: { type: String },
   },
   { timestamps: true }
 );
