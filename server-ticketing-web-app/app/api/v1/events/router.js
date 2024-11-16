@@ -1,6 +1,14 @@
 const express = require("express");
 const router = express();
-const { create, index, find, update, destroy } = require("./controller");
+const {
+  create,
+  index,
+  find,
+  update,
+  destroy,
+  changeStatus,
+} = require("./controller");
+
 const {
   authenticateUser,
   authorizeRoles,
@@ -14,12 +22,19 @@ router.put(
   authorizeRoles("organizer"),
   update
 );
-router.post("/events", authenticateUser, authorizeRoles("organizer"), create);
 router.delete(
   "/events/:id",
   authenticateUser,
   authorizeRoles("organizer"),
   destroy
+);
+router.post("/events", authenticateUser, authorizeRoles("organizer"), create);
+
+router.put(
+  "/events/:id/status",
+  authenticateUser,
+  authorizeRoles("organizer"),
+  changeStatus
 );
 
 module.exports = router;
