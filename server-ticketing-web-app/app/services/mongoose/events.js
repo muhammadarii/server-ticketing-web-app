@@ -7,7 +7,7 @@ const { BadRequestError, NotFoundError } = require("../../errors");
 
 const getAllEvents = async (req) => {
   const { keywords, category, talent } = req.query;
-  let condition = {};
+  let condition = { organizer: req.user.organizer };
 
   if (keywords) {
     condition = { ...condition, title: { $regex: keywords, $options: "i" } };
@@ -74,6 +74,7 @@ const createEvents = async (req) => {
     image,
     category,
     talent,
+    organizer: req.user.organizer,
   });
 
   return result;
@@ -82,7 +83,10 @@ const createEvents = async (req) => {
 const getOneEvents = async (req) => {
   const { id } = req.params;
 
-  const result = await Events.findOne({ _id: id })
+  const result = await Events.findOne({
+    _id: id,
+    organizer: req.user.organizer,
+  })
     .populate({
       path: "image",
       select: "_id name",
@@ -128,6 +132,7 @@ const updateEvents = async (req) => {
 
   const check = await Events.findOne({
     title,
+    organizer: req.user.organizer,
     _id: { $ne: id },
   });
 
@@ -147,6 +152,7 @@ const updateEvents = async (req) => {
       image,
       category,
       talent,
+      organizer: req.user.organizer,
     },
     { new: true, runValidators: true }
   );
@@ -159,6 +165,7 @@ const deleteEvents = async (req) => {
 
   const result = await Events.findOne({
     _id: id,
+    organizer: req.user.organizer,
   });
   if (!result) throw new NotFoundError(`Event id ${id} not found`);
 
