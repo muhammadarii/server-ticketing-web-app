@@ -13,8 +13,9 @@ const eventsRouter = require("./app/api/v1/events/router");
 const organizersRouter = require("./app/api/v1/organizers/router");
 const authCMSRouter = require("./app/api/v1/auth/router");
 const orderRouter = require("./app/api/v1/orders/router");
+const participantRouter = require("./app/api/v1/participants/router");
 
-const v1 = "/api/v1/cms";
+const v1 = "/api/v1/";
 
 const notFoundMiddleware = require("./app/middlewares/not-found");
 const handleErrorMiddleware = require("./app/middlewares/handle-error");
@@ -32,13 +33,14 @@ app.get("/", (req, res) => {
 });
 
 // router
-app.use(v1, categoriesRouter);
-app.use(v1, imagesRouter);
-app.use(v1, talentsRouter);
-app.use(v1, eventsRouter);
-app.use(v1, organizersRouter);
-app.use(v1, authCMSRouter);
-app.use(v1, orderRouter);
+app.use(`${v1}/cms`, categoriesRouter);
+app.use(`${v1}/cms`, imagesRouter);
+app.use(`${v1}/cms`, talentsRouter);
+app.use(`${v1}/cms`, eventsRouter);
+app.use(`${v1}/cms`, organizersRouter);
+app.use(`${v1}/cms`, authCMSRouter);
+app.use(`${v1}/cms`, orderRouter);
+app.use(`${v1}`, participantRouter);
 
 // middleware
 app.use(notFoundMiddleware);
